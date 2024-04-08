@@ -1,11 +1,12 @@
-﻿namespace VeterinaryClinic.Animals;
+﻿using System.ComponentModel.DataAnnotations;
 
-public class Animal
-{
-    private int Id { get; set; }
-    private string Kategoria { get; set; }
-    private string Name { get; set; }
-    private int Weight { get; set; }
-    private string Color { get; set; }
-    
+namespace VeterinaryClinic.Animals;
+
+public class Animal {
+    public int IdAnimal { get; set; }
+    [Required] [MaxLength(200)] public string Name { get; set; }
+    [Required] [MaxLength(200)] public string Category { get; set; }
+    [Required] [MaxLength(200)] public string Weight { get; set; }
+    [Required] [MaxLength(200)] public string Color { get; set; }
+    [Required] [MaxLength(200)] public int IndexNumber { get; set; }
 }
