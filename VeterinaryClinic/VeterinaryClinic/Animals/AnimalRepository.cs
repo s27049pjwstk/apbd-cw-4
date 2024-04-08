@@ -13,7 +13,7 @@ public class AnimalRepository : IAnimalRepository {
     public IEnumerable<Animal> GetAnimals() {
         using var con = new SqlConnection(_configuration["ConnectionStrings:DefaultConnection"]);
         con.Open();
-        
+        //fixme tu dac stałą kolekcje nie musi byc accessowania do baz danych tylko chyba symulacja jak na TPO
         using var cmd = new SqlCommand();
         cmd.Connection = con;
         cmd.CommandText = "SELECT IdAnimal, Name, Category, Weight, Color, IndexNumber FROM Animal ORDER BY LastName, FirstName";
