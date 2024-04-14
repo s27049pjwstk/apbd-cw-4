@@ -1,6 +1,6 @@
 ﻿using System.Data.SqlClient;
 
-namespace VeterinaryClinic.Animals; 
+namespace VeterinaryClinic.Animals;
 
 public class AnimalRepository : IAnimalRepository {
     private IConfiguration _configuration;
@@ -9,47 +9,69 @@ public class AnimalRepository : IAnimalRepository {
         _configuration = configuration;
     }
 
+    public static List<Animal> DATABASE = new List<Animal> {
+        new Animal {
+            IdAnimal = 1,
+            Name = "Max",
+            Category = "Dog",
+            Weight = "20kg",
+            Color = "Brown",
+            IndexNumber = 12345
+        },
+        new Animal {
+            IdAnimal = 2,
+            Name = "Whiskers",
+            Category = "Cat",
+            Weight = "5kg",
+            Color = "White",
+            IndexNumber = 67890
+        },
+        new Animal {
+            IdAnimal = 3,
+            Name = "Buddy",
+            Category = "Dog",
+            Weight = "15kg",
+            Color = "Black",
+            IndexNumber = 13579
+        }
+    };
 
     public IEnumerable<Animal> GetAnimals() {
-        using var con = new SqlConnection(_configuration["ConnectionStrings:DefaultConnection"]);
-        con.Open();
-        //fixme tu dac stałą kolekcje nie musi byc accessowania do baz danych tylko chyba symulacja jak na TPO
-        using var cmd = new SqlCommand();
-        cmd.Connection = con;
-        cmd.CommandText = "SELECT IdAnimal, Name, Category, Weight, Color, IndexNumber FROM Animal ORDER BY LastName, FirstName";
-        
-        var dr = cmd.ExecuteReader();
-        var animals = new List<Animal>();
-        while (dr.Read())
-        {
-            var grade = new Animal
-            {
-                IdAnimal = (int)dr["IdAnimal"],
-                Name = dr["Name"].ToString(),
-                Category = dr["Category"].ToString(),
-                Weight = dr["Weight"].ToString(),
-                Color = dr["Color"].ToString(),
-                IndexNumber = (int)dr["IndexNumber"]
-            };
-            animals.Add(grade);
-        }
-        
-        return animals;
+        return DATABASE;
     }
 
     public Animal GetAnimal(int idAnimal) {
-        throw new NotImplementedException();
+        return DATABASE.FirstOrDefault(a => a.IdAnimal == idAnimal);
     }
 
     public int CreateAnimal(Animal animal) {
-        throw new NotImplementedException();
+        var maxId = DATABASE.Max(a => a.IdAnimal);
+        animal.IdAnimal = maxId + 1;
+        DATABASE.Add(animal);
+        return animal.IdAnimal;
     }
 
     public int UpdateAnimal(Animal animal) {
-        throw new NotImplementedException();
+        var animalToUpdate = DATABASE.FirstOrDefault(a => a.IdAnimal == animal.IdAnimal);
+        if (animalToUpdate != null) {
+            animalToUpdate.Name = animal.Name;
+            animalToUpdate.Category = animal.Category;
+            animalToUpdate.Weight = animal.Weight;
+            animalToUpdate.Color = animal.Color;
+            animalToUpdate.IndexNumber = animal.IndexNumber;
+            return 1;
+        }
+
+        return 0;
     }
 
     public int DeleteAnimal(int idAnimal) {
-        throw new NotImplementedException();
+        var animalToRemove = DATABASE.FirstOrDefault(a => a.IdAnimal == idAnimal);
+        if (animalToRemove != null) {
+            DATABASE.Remove(animalToRemove);
+            return 1;
+        }
+
+        return 0;
     }
 }

@@ -1,7 +1,9 @@
-﻿namespace VeterinaryClinic.Animals; 
+﻿namespace VeterinaryClinic.Animals;
 
-public class IAnimalsService {
-    public IEnumerable<Animal> GetAnimals() {
-        return new List<Animal>();
-    }
+public interface IAnimalsService {
+    IEnumerable<Animal> GetAnimals();
+    Animal? GetAnimal(int idAnimal);
+    int CreateAnimal(Animal animal);
+    int UpdateAnimal(Animal animal);
+    int DeleteAnimal(int idAnimal);
 }
