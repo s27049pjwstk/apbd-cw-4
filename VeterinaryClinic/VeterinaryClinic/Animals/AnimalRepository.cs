@@ -4,6 +4,7 @@ namespace VeterinaryClinic.Animals;
 
 public class AnimalRepository : IAnimalRepository {
     private IConfiguration _configuration;
+    //fixme tu dodac faktyczny connecting z bazą
 
     public AnimalRepository(IConfiguration configuration) {
         _configuration = configuration;
